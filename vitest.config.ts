@@ -8,5 +8,6 @@ export default defineConfig({
     ],
     test: {
         bail: 1,
+        globalSetup: 'vitest.global-setup.ts',
     }
 })
