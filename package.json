@@ -1,0 +1,15 @@
+{
+   "name": "typeorm-ultimate-test-suite",
+   "scripts": {
+      "test": "vitest"
+   },
+   "dependencies": {
+      "reflect-metadata": "^0.2.2",
+      "sqlite3": "^5.1.7",
+      "typeorm": "0.3.25"
+   },
+   "devDependencies": {
+      "rollup-plugin-swc3": "^0.12.1",
+      "vitest": "^3.2.4"
+   }
+}
