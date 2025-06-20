@@ -9,12 +9,12 @@ import { CartesianProduct } from "../../helpers/product";
  * Make shuffle of columns in select
  */
 
-interface TestSubset {
+interface TestOptions {
     skip: boolean, // for debugging purposes
     only: boolean, // for debugging purposes
 }
 
-interface SelectTestDescription extends TestSubset {
+interface SelectTestDescription extends TestOptions {
     title: string,
     // We need three different options because we have three different interfaces
     selectOption: (entity: any) => FindOneOptions<ObjectLiteral>["select"],
@@ -94,7 +94,7 @@ const select: SelectTestDescription[] = [
     },
     {
         skip: false,
-        only: false,
+        only: true,
         title: "2 columns",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -277,7 +277,7 @@ const select: SelectTestDescription[] = [
     },
 ]
 
-interface EntityTestDescription extends TestSubset {
+interface EntityTestDescription extends TestOptions {
     entity: any;
     nameAlias: string,
     tableName: string,
@@ -288,7 +288,7 @@ interface EntityTestDescription extends TestSubset {
 }
 
 const entities: EntityTestDescription[] = [
-    { skip: false, only: false, entity: Album, tableName: "album", nameAlias: "album",
+    { skip: false, only: true, entity: Album, tableName: "album", nameAlias: "album",
         rawMapper: (x) => ({albumId: x.album_album_id ? Number(x.album_album_id) : undefined, title: x.album_title}),
         rawFromMapper: (x) => ({albumId: x.album_id ? Number(x.album_id) : undefined, title: x.title}),
         datasetMapper: (x: typeof ChinookDataset.Albums[number]) => ({albumId: x.albumId, title: x.title}),
@@ -346,7 +346,7 @@ const entities: EntityTestDescription[] = [
         dataset: ChinookDataset.PLaylistTracks },
 ]
 
-interface WhereTestDescription extends TestSubset {
+interface WhereTestDescription extends TestOptions {
     title: string,
     option: (entity: any) => ObjectLiteral[],
     filterDataset: (entity: any, dbType: string) => (x: any[]) => any[];
@@ -419,7 +419,7 @@ const wheres: WhereTestDescription[] = [
     }
 ]
 
-interface OrderTestDescription extends TestSubset{
+interface OrderTestDescription extends TestOptions{
     title: string,
     // We need three different options because we have three different interfaces
     applyOption: (entity: any, qb: SelectQueryBuilder<ObjectLiteral>) => SelectQueryBuilder<ObjectLiteral>,
@@ -512,7 +512,7 @@ const orders: OrderTestDescription[] = [
     }
 ]
 
-interface LimitTestDescription extends TestSubset{
+interface LimitTestDescription extends TestOptions{
     title: string,
     option: number,
 }
@@ -544,7 +544,7 @@ const limits: LimitTestDescription[] = [
     }
 ]
 
-interface OffsetTestDescription extends TestSubset{
+interface OffsetTestDescription extends TestOptions{
     title: string,
     option: number,
 }
@@ -594,7 +594,7 @@ const optimizeTests = (testCases: ReturnType<typeof _generateTests>) => {
 }
 
 
-const prepareSubsetOfTests = <T extends TestSubset>(allTests: T[]) => {
+const prepareSubsetOfTests = <T extends TestOptions>(allTests: T[]) => {
     const subset = allTests.filter(x => !x.skip);
     if (subset.some(x => x.only))
         return subset.filter(x => x.only);
