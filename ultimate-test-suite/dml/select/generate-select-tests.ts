@@ -94,7 +94,7 @@ const select: SelectTestDescription[] = [
     },
     {
         skip: false,
-        only: true,
+        only: false,
         title: "2 columns",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -125,25 +125,25 @@ const select: SelectTestDescription[] = [
         applySelectToQB: (entity, qb) => {
             const entityConfig = entities.find(x => x.entity === entity)!;
             if (entity.name === Album.name) {
-                return qb.select(["album_id", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["albumId", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Artist.name) {
-                return qb.select(["artist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["artistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Customer.name) {
-                return qb.select(["customer_id", "address"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["customerId", "address"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Employee.name) {
-                return qb.select(["employee_id", "phone"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["employeeId", "phone"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Genre.name) {
-                return qb.select(["genre_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["genreId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Invoice.name) {
-                return qb.select(["invoice_id", "invoice_date"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceId", "invoiceDate"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === InvoiceLine.name) {
-                return qb.select(["invoice_line_id", "quantity"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceLineId", "quantity"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === MediaType.name) {
-                return qb.select(["media_type_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["mediaTypeId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Playlist.name) {
-                return qb.select(["playlist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["playlistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Track.name) {
-                return qb.select(["track_id", "milliseconds"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["trackId", "milliseconds"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === PlaylistTrack.name) {
                 return qb.select(["id"].map(x => [entityConfig.nameAlias, x].join(".")));
             }
@@ -186,25 +186,25 @@ const select: SelectTestDescription[] = [
         applySelectToQB: (entity, qb) => {
             const entityConfig = entities.find(x => x.entity === entity)!;
             if (entity.name === Album.name) {
-                return qb.select(["album_id", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["albumId", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Artist.name) {
-                return qb.select(["artist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["artistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Customer.name) {
-                return qb.select(["customer_id", "address", "city", "first_name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["customerId", "address", "city", "firstName"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Employee.name) {
-                return qb.select(["employee_id", "phone", "address", "postal_code"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["employeeId", "phone", "address", "postalCode"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Genre.name) {
-                return qb.select(["genre_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["genreId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Invoice.name) {
-                return qb.select(["invoice_id", "invoice_date", "billing_country", "billing_state"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceId", "invoiceDate", "billingCountry", "billingState"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === InvoiceLine.name) {
-                return qb.select(["invoice_line_id", "quantity", "unit_price"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceLineId", "quantity", "unitPrice"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === MediaType.name) {
-                return qb.select(["media_type_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["mediaTypeId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Playlist.name) {
-                return qb.select(["playlist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["playlistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Track.name) {
-                return qb.select(["track_id", "milliseconds", "composer", "bytes"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["trackId", "milliseconds", "composer", "bytes"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === PlaylistTrack.name) {
                 return qb.select(["id"].map(x => [entityConfig.nameAlias, x].join(".")));
             }
@@ -247,25 +247,25 @@ const select: SelectTestDescription[] = [
         applySelectToQB: (entity, qb) => {
             const entityConfig = entities.find(x => x.entity === entity)!;
             if (entity.name === Album.name) {
-                return qb.select(["album_id", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["albumId", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Artist.name) {
-                return qb.select(["artist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["artistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Customer.name) {
-                return qb.select(["customer_id", "address", "city", "first_name", "company", "country", "email", "fax", "last_name", "phone", "postal_code", "state"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["customerId", "address", "city", "firstName", "company", "country", "email", "fax", "last_name", "phone", "postal_code", "state"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Employee.name) {
-                return qb.select(["employee_id", "phone", "address", "postal_code", "birth_date", "city", "country", "email", "fax", "first_name", "hire_date", "last_name", "state", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["employee_id", "phone", "address", "postalCode", "birthDate", "city", "country", "email", "fax", "firstName", "hireDate", "lastName", "state", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Genre.name) {
                 return qb.select(["genre_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Invoice.name) {
-                return qb.select(["invoice_id", "invoice_date", "billing_country", "billing_state", "billing_address", "billing_city", "billing_postal_code", "total"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceId", "invoiceDate", "billingCountry", "billingState", "billingAddress", "billingCity", "billingPostalCode", "total"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === InvoiceLine.name) {
-                return qb.select(["invoice_line_id", "quantity", "unit_price"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["invoiceLineId", "quantity", "unitPrice"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === MediaType.name) {
-                return qb.select(["media_type_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["mediaTypeId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Playlist.name) {
-                return qb.select(["playlist_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["playlistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Track.name) {
-                return qb.select(["track_id", "milliseconds", "composer", "bytes", "name", "unit_price"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["trackId", "milliseconds", "composer", "bytes", "name", "unitPrice"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === PlaylistTrack.name) {
                 return qb.select(["id"].map(x => [entityConfig.nameAlias, x].join(".")));
             }
@@ -288,7 +288,7 @@ interface EntityTestDescription extends TestOptions {
 }
 
 const entities: EntityTestDescription[] = [
-    { skip: false, only: true, entity: Album, tableName: "album", nameAlias: "album",
+    { skip: false, only: false, entity: Album, tableName: "album", nameAlias: "album",
         rawMapper: (x) => ({albumId: x.album_album_id ? Number(x.album_album_id) : undefined, title: x.album_title}),
         rawFromMapper: (x) => ({albumId: x.album_id ? Number(x.album_id) : undefined, title: x.title}),
         datasetMapper: (x: typeof ChinookDataset.Albums[number]) => ({albumId: x.albumId, title: x.title}),
@@ -596,8 +596,14 @@ const optimizeTests = (testCases: ReturnType<typeof _generateTests>) => {
 
 const prepareSubsetOfTests = <T extends TestOptions>(allTests: T[]) => {
     const subset = allTests.filter(x => !x.skip);
-    if (subset.some(x => x.only))
-        return subset.filter(x => x.only);
+    if (allTests.length !== subset.length)
+        console.warn(`Skipping enabled!`)
+
+    const onlyTests = subset.filter(x => x.only);
+    if (onlyTests.length) {
+        console.warn(`Only flag enabled!`)
+        return onlyTests;
+    }
     return subset;
 }
 
