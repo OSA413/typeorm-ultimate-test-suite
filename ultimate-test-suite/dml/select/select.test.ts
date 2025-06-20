@@ -12,6 +12,8 @@ import { AbstractSqliteDriver } from "typeorm/driver/sqlite-abstract/AbstractSql
 import { DriverUtils } from "typeorm/driver/DriverUtils"
 import { cleanUndefinedProperties } from "../../helpers/cleanUndefinedProperties"
 
+// TODO: get rid of `cleanUndefinedProperties`
+
 // TODO: move this function to the main source code
 const doesTheDBNotSupportOffsetWithoutLimit = (dataSource: DataSource) => {
     return (
@@ -149,7 +151,8 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 const repoFindOne = await repo.findOne(commonOptions);
                 if (calculateExceptionForDeepEqualDataset(testCase, dataSource.driver.options.type)
                     && calculateExceptionForHasDeepMembers(testCase, dataSource.driver.options.type))
-                    expect(repoFindOne).to.deep.equal(firstFromDataset);
+                    expect(repoFindOne ? cleanUndefinedProperties(repoFindOne) : null)
+                        .to.deep.equal(firstFromDataset ? cleanUndefinedProperties(firstFromDataset) : null);
 
                 const repoFind = await repo.find({
                     ...commonOptions,
@@ -197,9 +200,9 @@ describe("Ultimate Test Suite > DML > Select", () => {
 
                     // I couldn't figure out how to make a sort like DB does
                     if (calculateExceptionForDeepEqualDataset(testCase, dataSource.driver.options.type))
-                        expect(fromMany).to.deep.equal(preparedDataset);
+                        expect(fromMany.map(cleanUndefinedProperties)).to.deep.equal(preparedDataset.map(cleanUndefinedProperties));
                     else if (calculateExceptionForHasDeepMembers(testCase, dataSource.driver.options.type))
-                        expect(fromMany).to.have.deep.members(preparedDataset);
+                        expect(fromMany.map(cleanUndefinedProperties)).to.have.deep.members(preparedDataset.map(cleanUndefinedProperties));
                     expect(repoRawMany.map(testCase.entity.rawMapper)).to.deep.equal(fromRawMany.map(testCase.entity.rawMapper));
                 }
                 

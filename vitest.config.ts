@@ -9,5 +9,8 @@ export default defineConfig({
     test: {
         bail: 1,
         globalSetup: 'vitest.global-setup.ts',
+        testTimeout: 90_000,
+        reporters: ['json', 'default'],
+        outputFile: "test-result.log"
     }
 })

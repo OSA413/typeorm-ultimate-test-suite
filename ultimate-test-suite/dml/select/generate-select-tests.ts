@@ -9,7 +9,12 @@ import { CartesianProduct } from "../../helpers/product";
  * Make shuffle of columns in select
  */
 
-interface SelectTestDescription {
+interface TestSubset {
+    skip: boolean, // for debugging purposes
+    only: boolean, // for debugging purposes
+}
+
+interface SelectTestDescription extends TestSubset {
     title: string,
     // We need three different options because we have three different interfaces
     selectOption: (entity: any) => FindOneOptions<ObjectLiteral>["select"],
@@ -18,13 +23,17 @@ interface SelectTestDescription {
 }
 
 const select: SelectTestDescription[] = [
-    { 
+    {
+        skip: false,
+        only: false,
         title: "all columns implicitly",
         selectOption: () => undefined,
         applySelectToQB: (entity, qb) => qb,
         arrayForDataset: () => [],
     },
     {
+        skip: false,
+        only: false,
         title: "1 column",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -84,6 +93,8 @@ const select: SelectTestDescription[] = [
         },
     },
     {
+        skip: false,
+        only: false,
         title: "2 columns",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -143,6 +154,8 @@ const select: SelectTestDescription[] = [
         },
     },
     {
+        skip: false,
+        only: false,
         title: "4 columns",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -202,6 +215,8 @@ const select: SelectTestDescription[] = [
         },
     },
     {
+        skip: false,
+        only: false,
         title: "all columns explicitly",
         selectOption: (entity) => {
             if (entity.name === Album.name) {
@@ -262,7 +277,7 @@ const select: SelectTestDescription[] = [
     },
 ]
 
-interface EntityTestDescription {
+interface EntityTestDescription extends TestSubset {
     entity: any;
     nameAlias: string,
     tableName: string,
@@ -273,57 +288,57 @@ interface EntityTestDescription {
 }
 
 const entities: EntityTestDescription[] = [
-    { entity: Album, tableName: "album", nameAlias: "album",
+    { skip: false, only: false, entity: Album, tableName: "album", nameAlias: "album",
         rawMapper: (x) => ({albumId: x.album_album_id ? Number(x.album_album_id) : undefined, title: x.album_title}),
         rawFromMapper: (x) => ({albumId: x.album_id ? Number(x.album_id) : undefined, title: x.title}),
         datasetMapper: (x: typeof ChinookDataset.Albums[number]) => ({albumId: x.albumId, title: x.title}),
         dataset: ChinookDataset.Albums },
-    { entity: Artist, tableName: "artist", nameAlias: "artist" ,
+    { skip: false, only: false, entity: Artist, tableName: "artist", nameAlias: "artist" ,
         rawMapper: (x) => ({artistId: x.artist_artist_id ? Number(x.artist_artist_id) : undefined, name: x.artist_name}),
         rawFromMapper: (x) => ({artistId: x.artist_id ? Number(x.artist_id) : undefined, name: x.name}),
         datasetMapper: (x: typeof ChinookDataset.Artists[number]) => x,
         dataset: ChinookDataset.Artists  },
-    { entity: Customer, tableName: "customer", nameAlias: "customer",
+    { skip: false, only: false, entity: Customer, tableName: "customer", nameAlias: "customer",
         rawMapper: (x) => ({address: x.customer_address, city: x.customer_city, company: x.customer_company, country: x.customer_country, customerId: x.customer_customer_id ? Number(x.customer_customer_id) : undefined, email: x.customer_email, fax: x.customer_fax, firstName: x.customer_first_name, lastName: x.customer_last_name, phone: x.customer_phone, postalCode: x.customer_postal_code, state: x.customer_state}),
         rawFromMapper: (x) => ({address: x.address, city: x.city, company: x.company, country: x.country, customerId: x.customer_id ? Number(x.customer_id) : undefined, email: x.email, fax: x.fax, firstName: x.first_name, lastName: x.last_name, phone: x.phone, postalCode: x.postal_code, state: x.state}),
         datasetMapper: (x: typeof ChinookDataset.Customers[number]) => {const res = {...x}; delete (res as any).supportRep; return res;},
         dataset: ChinookDataset.Customers   },
-    { entity: Employee, tableName: "employee", nameAlias: "employee",
+    { skip: false, only: false, entity: Employee, tableName: "employee", nameAlias: "employee",
         rawMapper: (x) => ({address: x.employee_address, birthDate: x.employee_birth_date ? new Date(x.employee_birth_date) : undefined, city: x.employee_city, country: x.employee_country, email: x.employee_email, employeeId: x.employee_employee_id ? Number(x.employee_employee_id) : undefined, fax: x.employee_fax, firstName: x.employee_first_name, hireDate: x.employee_hire_date ? new Date(x.employee_hire_date) : undefined, lastName: x.employee_last_name, phone: x.employee_phone, postalCode: x.employee_postal_code, state: x.employee_state, title: x.employee_title}),
         rawFromMapper: (x) => ({address: x.address, birthDate: new Date(x.birth_date), city: x.city, country: x.country, email: x.email, employeeId: x.employee_id ? Number(x.employee_id) : undefined, fax: x.fax, firstName: x.first_name, hireDate: new Date(x.hire_date), lastName: x.last_name, phone: x.phone, postalCode: x.postal_code, state: x.state, title: x.title}),
         datasetMapper: (x: typeof ChinookDataset.Employees[number]) => {const res = {...x, hireDate: new Date(x.hireDate), birthDate: new Date(x.birthDate)}; delete (res as any).reportsTo; return res;},
         dataset: ChinookDataset.Employees   },
-    { entity: Genre, tableName: "genre", nameAlias: "genre",
+    { skip: false, only: false, entity: Genre, tableName: "genre", nameAlias: "genre",
         rawMapper: (x) => ({genreId: x.genre_genre_id ? Number(x.genre_genre_id) : undefined, name: x.genre_name}),
         rawFromMapper: (x) => ({genreId: x.genre_id? Number(x.genre_id) : undefined, name: x.name}),
         datasetMapper: (x: typeof ChinookDataset.Genres[number]) => x,
         dataset: ChinookDataset.Genres   },
-    { entity: Invoice, tableName: "invoice", nameAlias: "invoice",
+    { skip: false, only: false, entity: Invoice, tableName: "invoice", nameAlias: "invoice",
         rawMapper: (x) => ({billingAddress: x.invoice_billing_address, billingCity: x.invoice_billing_city, billingCountry: x.invoice_billing_country, billingPostalCode: x.invoice_billing_postal_code, billingState: x.invoice_billing_state, invoiceDate: x.invoice_invoice_date ? new Date(x.invoice_invoice_date) : undefined, invoiceId: x.invoice_invoice_id ? Number(x.invoice_invoice_id) : undefined, total: x.invoice_total ? Number(x.invoice_total) : undefined}),
         rawFromMapper: (x) => ({billingAddress: x.billing_address, billingCity: x.billing_city, billingCountry: x.billing_country, billingPostalCode: x.billing_postal_code, billingState: x.billing_state, invoiceDate: new Date(x.invoice_date), invoiceId: x.invoice_id ? Number(x.invoice_id) : undefined, total: x.total ? Number(x.total) : undefined}),
         datasetMapper: (x: typeof ChinookDataset.Invoices[number]) => {const res = {...x, invoiceDate: new Date(x.invoiceDate), total: x.total}; delete (res as any).customer; return res;},
         dataset: ChinookDataset.Invoices   },
-    { entity: InvoiceLine, tableName: "invoice_line", nameAlias: "invoice_line",
+    { skip: false, only: false, entity: InvoiceLine, tableName: "invoice_line", nameAlias: "invoice_line",
         rawMapper: (x) => ({invoiceLineId: x.invoice_line_invoice_line_id ? Number(x.invoice_line_invoice_line_id) : undefined, quantity: x.invoice_line_quantity ? Number(x.invoice_line_quantity) : undefined, unitPrice: x.invoice_line_unit_price ? Number(x.invoice_line_unit_price) : undefined}),
         rawFromMapper: (x) => ({invoiceLineId: x.invoice_line_id ? Number(x.invoice_line_id) : undefined, quantity: x.quantity ? Number(x.quantity) : undefined, unitPrice: x.unit_price ? Number(x.unit_price) : undefined}),
         datasetMapper: (x: typeof ChinookDataset.InvoiceLines[number]) => {const res = {...x, unitPrice: x.unitPrice}; delete (res as any).track; delete (res as any).invoice; return res;},
         dataset: ChinookDataset.InvoiceLines },
-    { entity: MediaType, tableName: "media_type", nameAlias: "media_type",
+    { skip: false, only: false, entity: MediaType, tableName: "media_type", nameAlias: "media_type",
         rawMapper: (x) => ({mediaTypeId: x.media_type_media_type_id ? Number(x.media_type_media_type_id) : undefined, name: x.media_type_name}),
         rawFromMapper: (x) => ({mediaTypeId: x.media_type_id ? Number(x.media_type_id) : undefined, name: x.name}),
         datasetMapper: (x) => x,
         dataset: ChinookDataset.MediaTypes},
-    { entity: Playlist, tableName: "playlist", nameAlias: "playlist",
+    { skip: false, only: false, entity: Playlist, tableName: "playlist", nameAlias: "playlist",
         rawMapper: (x) => ({name: x.playlist_name, playlistId: x.playlist_playlist_id ? Number(x.playlist_playlist_id) : undefined}),
         rawFromMapper: (x) => ({name: x.name, playlistId: x.playlist_id ? Number(x.playlist_id) : undefined}),
         datasetMapper: (x) => x,
         dataset: ChinookDataset.Playlists},
-    { entity: Track, tableName: "track", nameAlias: "track",
+    { skip: false, only: false, entity: Track, tableName: "track", nameAlias: "track",
         rawMapper: (x) => ({bytes: x.track_bytes ? Number(x.track_bytes) : undefined, composer: x.track_composer, milliseconds: x.track_milliseconds ? Number(x.track_milliseconds) : undefined, name: x.track_name, trackId: Number(x.track_track_id), unitPrice: x.track_unit_price ? Number(x.track_unit_price) : undefined}),
         rawFromMapper: (x) => ({bytes: x.bytes ? Number(x.bytes) : undefined, composer: x.composer, milliseconds: x.milliseconds ? Number(x.milliseconds) : undefined, name: x.name, trackId: Number(x.track_id), unitPrice: x.unit_price ? Number(x.unit_price) : undefined}),
         datasetMapper: (x: typeof ChinookDataset.Tracks[number]) => {const res = {...x, unitPrice: String(x.unitPrice)}; delete (res as any).album; delete (res as any).genre; delete (res as any).mediaType; return res;},
         dataset: ChinookDataset.Tracks },
-    { entity: PlaylistTrack, tableName: "playlist_track", nameAlias: "playlist_track",
+    { skip: false, only: false, entity: PlaylistTrack, tableName: "playlist_track", nameAlias: "playlist_track",
         rawMapper: (x) => ({id: x.playlist_track_id ? Number(x.playlist_track_id) : undefined}),
         rawFromMapper: (x) => ({id: x.id ? Number(x.id) : undefined}),
         // Exception!
@@ -331,7 +346,7 @@ const entities: EntityTestDescription[] = [
         dataset: ChinookDataset.PLaylistTracks },
 ]
 
-interface WhereTestDescription {
+interface WhereTestDescription extends TestSubset {
     title: string,
     option: (entity: any) => ObjectLiteral[],
     filterDataset: (entity: any, dbType: string) => (x: any[]) => any[];
@@ -339,11 +354,15 @@ interface WhereTestDescription {
 
 const wheres: WhereTestDescription[] = [
     {
+        skip: false,
+        only: false,
         title: "no where condition",
         option: () => ({}) as any,
         filterDataset: () => (x) => x.filter(() => true),
     },
     {
+        skip: false,
+        only: false,
         title: "1 where condition",
         option: (entity) => {
             if (entity.name === Album.name) {
@@ -400,7 +419,7 @@ const wheres: WhereTestDescription[] = [
     }
 ]
 
-interface OrderTestDescription {
+interface OrderTestDescription extends TestSubset{
     title: string,
     // We need three different options because we have three different interfaces
     applyOption: (entity: any, qb: SelectQueryBuilder<ObjectLiteral>) => SelectQueryBuilder<ObjectLiteral>,
@@ -419,12 +438,16 @@ const datasetOrderDependingOnDBType = (dbDialict: string, a: string, b: string) 
 
 const orders: OrderTestDescription[] = [
     {
+        skip: false,
+        only: false,
         title: "no order condition",
         applyOption: (entity, qb) => qb,
         optionForRepo: () => undefined,
         orderDataset: () => (x) => x,
     },
     {
+        skip: false,
+        only: false,
         title: "1 order condition",
         applyOption: (entity, qb) => {
             const entityConfig = entities.find(x => x.entity === entity)!;
@@ -489,49 +512,65 @@ const orders: OrderTestDescription[] = [
     }
 ]
 
-interface LimitTestDescription {
+interface LimitTestDescription extends TestSubset{
     title: string,
     option: number,
 }
 
 const limits: LimitTestDescription[] = [
     {
+        skip: false,
+        only: false,
         title: "no limit",
         option: undefined as never as number,
     },
     {
+        skip: false,
+        only: false,
         title: "limit 1",
         option: 1,
     },
     {
+        skip: false,
+        only: false,
         title: "limit 10",
         option: 10,
     },
     {
+        skip: false,
+        only: false,
         title: "limit 100",
         option: 100,
     }
 ]
 
-interface OffsetTestDescription {
+interface OffsetTestDescription extends TestSubset{
     title: string,
     option: number,
 }
 
 const offsets: OffsetTestDescription[] = [
     {
+        skip: false,
+        only: false,
         title: "no offset",
         option: undefined as never as number,
     },
     {
+        skip: false,
+        only: false,
         title: "offset 1",
         option: 1,
     },
     {
+        skip: false,
+        only: false,
         title: "offset 10",
         option: 10,
     },
     {
+        skip: false,
+        only: false,
         title: "offset 100",
         option: 100,
     }
@@ -554,9 +593,23 @@ const optimizeTests = (testCases: ReturnType<typeof _generateTests>) => {
     return Array.from(testMap.values());
 }
 
+
+const prepareSubsetOfTests = <T extends TestSubset>(allTests: T[]) => {
+    const subset = allTests.filter(x => !x.skip);
+    if (subset.some(x => x.only))
+        return subset.filter(x => x.only);
+    return subset;
+}
+
 export const _generateTests = () => {
-    return CartesianProduct.product(select, entities, wheres, orders, limits, offsets)
-    .map(testCase => ({
+    return CartesianProduct.product(
+        prepareSubsetOfTests(select),
+        prepareSubsetOfTests(entities),
+        prepareSubsetOfTests(wheres),
+        prepareSubsetOfTests(orders),
+        prepareSubsetOfTests(limits),
+        prepareSubsetOfTests(offsets),
+    ).map(testCase => ({
         select: testCase[0],
         entity: testCase[1],
         where: testCase[2],
