@@ -132,7 +132,8 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 const repoOne = await baseRepoQueryBuilder.comment("repoOne").getOne();
                 const repoRawOne = await baseRepoQueryBuilder.comment("repoRawOne").getRawOne();
 
-                expect(repoOne).to.deep.equal(repoRawOne ? cleanUndefinedProperties(testCase.entity.rawMapper(repoRawOne)) : null)
+                expect(repoOne ? cleanUndefinedProperties(repoOne) : null)
+                    .to.deep.equal(repoRawOne ? cleanUndefinedProperties(testCase.entity.rawMapper(repoRawOne)) : null)
 
                 const repoMany = await baseRepoQueryBuilder.comment("repoMany").getMany();
                 const repoRawMany = await baseRepoQueryBuilder.comment("repoRawMany").getRawMany();
@@ -202,7 +203,8 @@ describe("Ultimate Test Suite > DML > Select", () => {
                     expect(repoRawMany.map(testCase.entity.rawMapper)).to.deep.equal(fromRawMany.map(testCase.entity.rawMapper));
                 }
                 
-                expect(repoRawMany.map(testCase.entity.rawMapper).map(cleanUndefinedProperties)).to.deep.equal(repoFind);
+                expect(repoRawMany.map(testCase.entity.rawMapper).map(cleanUndefinedProperties))
+                    .to.deep.equal(repoFind.map(cleanUndefinedProperties));
 
                 if (!(dataSource.driver instanceof AbstractSqliteDriver)) {
                     const stream = await baseQueryBuilderFrom.stream()
