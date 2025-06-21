@@ -2,6 +2,14 @@ name: database-tests
 
 on:
   workflow_call:
+    inputs:
+      node-container:
+        required: true
+        default: "node:20"
+        type: string
+      typeorm-package-link:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       node-container:
