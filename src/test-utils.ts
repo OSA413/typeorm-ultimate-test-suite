@@ -5,15 +5,12 @@ import {
     DatabaseType,
     DataSource,
     DataSourceOptions,
-    Driver,
     EntitySchema,
     EntitySubscriberInterface,
     getMetadataArgsStorage,
     InsertEvent,
     Logger,
     NamingStrategyInterface,
-    QueryRunner,
-    Table,
 } from "typeorm"
 import { QueryResultCache } from "typeorm/cache/QueryResultCache"
 import path from "path"
@@ -167,32 +164,6 @@ export interface TestingOptions {
      * Allows automatic isolation of where clauses
      */
     isolateWhereStatements?: boolean
-}
-
-/**
- * Creates a testing connection options for the given driver type based on the configuration in the ormconfig.json
- * and given options that can override some of its configuration for the test-specific use case.
- */
-export function setupSingleTestingConnection(
-    driverType: DatabaseType,
-    options: TestingOptions,
-): DataSourceOptions | undefined {
-    const testingConnections = setupTestingConnections({
-        name: options.name ? options.name : undefined,
-        entities: options.entities ? options.entities : [],
-        subscribers: options.subscribers ? options.subscribers : [],
-        dropSchema: options.dropSchema ? options.dropSchema : false,
-        schemaCreate: options.schemaCreate ? options.schemaCreate : false,
-        enabledDrivers: [driverType],
-        cache: options.cache,
-        schema: options.schema ? options.schema : undefined,
-        namingStrategy: options.namingStrategy
-            ? options.namingStrategy
-            : undefined,
-    })
-    if (!testingConnections.length) return undefined
-
-    return testingConnections[0]
 }
 
 /**
@@ -478,104 +449,5 @@ export function closeTestingConnections(connections: DataSource[]) {
                 ? connection.destroy()
                 : undefined,
         ),
-    )
-}
-
-/**
- * Reloads all databases for all given connections.
- */
-export function reloadTestingDatabases(connections: DataSource[]) {
-    GeneratedColumnReplacerSubscriber.globalIncrementValues = {}
-    return Promise.all(
-        connections.map((connection) => connection.synchronize(true)),
-    )
-}
-
-/**
- * Generates random text array with custom length.
- */
-export function generateRandomText(length: number): string {
-    let text = ""
-    const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-
-    for (let i = 0; i <= length; i++)
-        text += characters.charAt(Math.floor(Math.random() * characters.length))
-
-    return text
-}
-
-export function sleep(ms: number): Promise<void> {
-    return new Promise<void>((ok) => {
-        setTimeout(ok, ms)
-    })
-}
-
-/**
- * Creates typeorm service table for storing user defined Views and generate columns.
- */
-export async function createTypeormMetadataTable(
-    driver: Driver,
-    queryRunner: QueryRunner,
-) {
-    const schema = driver.schema
-    const database = driver.database
-    const typeormMetadataTable = driver.buildTableName(
-        "typeorm_metadata",
-        schema,
-        database,
-    )
-
-    await queryRunner.createTable(
-        new Table({
-            database: database,
-            schema: schema,
-            name: typeormMetadataTable,
-            columns: [
-                {
-                    name: "type",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataType,
-                    }),
-                    isNullable: false,
-                },
-                {
-                    name: "database",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataDatabase,
-                    }),
-                    isNullable: true,
-                },
-                {
-                    name: "schema",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataSchema,
-                    }),
-                    isNullable: true,
-                },
-                {
-                    name: "table",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataTable,
-                    }),
-                    isNullable: true,
-                },
-                {
-                    name: "name",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataName,
-                    }),
-                    isNullable: true,
-                },
-                {
-                    name: "value",
-                    type: driver.normalizeType({
-                        type: driver.mappedDataTypes.metadataValue,
-                    }),
-                    isNullable: true,
-                },
-            ],
-        }),
-        true,
     )
 }
