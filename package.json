@@ -4,7 +4,12 @@
       "test": "vitest"
    },
    "dependencies": {
+      "better-sqlite3": "^11.10.0",
+      "mysql": "^2.18.1",
+      "pg": "^8.16.2",
+      "pg-query-stream": "^4.10.2",
       "reflect-metadata": "^0.2.2",
+      "sql.js": "^1.13.0",
       "sqlite3": "^5.1.7",
       "typeorm": "0.3.25"
    },
