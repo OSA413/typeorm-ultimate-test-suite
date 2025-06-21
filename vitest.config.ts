@@ -8,7 +8,6 @@ export default defineConfig({
     ],
     test: {
         bail: 1,
-        silent: true,
         globalSetup: 'vitest.global-setup.ts',
         testTimeout: 90_000,
         reporters: ['json', 'default'],
