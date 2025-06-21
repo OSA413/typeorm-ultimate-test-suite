@@ -1,0 +1,19 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-nodejs
+# https://docs.github.com/en/actions/use-cases-and-examples/using-containerized-services/creating-postgresql-service-containers
+
+name: test
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # These tests run in standard node containers with their db attached as a service
+  database-tests:
+    uses: ./.github/workflows/test.yml
+    with:
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+      node-container: "node:20"
