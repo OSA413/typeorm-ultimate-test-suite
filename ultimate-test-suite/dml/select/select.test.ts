@@ -96,6 +96,9 @@ const calculateExceptionForHasDeepMembers = (testCase: ReturnType<typeof generat
 
     if (testCase.entity.entity === PlaylistTrack) return false;
 
+    if (testCase.entity.entity === Track && testCase.order.optionForRepo(testCase.entity.entity))
+        return false;
+
     return true;
 }
 

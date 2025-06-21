@@ -251,11 +251,11 @@ const select: SelectTestDescription[] = [
             } else if (entity.name === Artist.name) {
                 return qb.select(["artistId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Customer.name) {
-                return qb.select(["customerId", "address", "city", "firstName", "company", "country", "email", "fax", "last_name", "phone", "postal_code", "state"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["customerId", "address", "city", "firstName", "company", "country", "email", "fax", "lastName", "phone", "postalCode", "state"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Employee.name) {
-                return qb.select(["employee_id", "phone", "address", "postalCode", "birthDate", "city", "country", "email", "fax", "firstName", "hireDate", "lastName", "state", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["employeeId", "phone", "address", "postalCode", "birthDate", "city", "country", "email", "fax", "firstName", "hireDate", "lastName", "state", "title"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Genre.name) {
-                return qb.select(["genre_id", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
+                return qb.select(["genreId", "name"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === Invoice.name) {
                 return qb.select(["invoiceId", "invoiceDate", "billingCountry", "billingState", "billingAddress", "billingCity", "billingPostalCode", "total"].map(x => [entityConfig.nameAlias, x].join(".")))
             } else if (entity.name === InvoiceLine.name) {
