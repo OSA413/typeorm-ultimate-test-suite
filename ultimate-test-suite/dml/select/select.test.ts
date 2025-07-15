@@ -7,7 +7,7 @@ import {
 import { DataSource } from "typeorm"
 import { Album, Artist, Customer, Employee, Genre, Invoice, InvoiceLine, MediaType, Playlist, Track, PlaylistTrack } from "../../chinook_database/entity/Entities"
 import { seedChinookDatabase } from "../../chinook_database/seed"
-import { generateTests, getTestName, prepareDataset } from "./generate-select-tests"
+import { generateTests, getTestName, prepareDataset } from "./select.test.generate"
 import { AbstractSqliteDriver } from "typeorm/driver/sqlite-abstract/AbstractSqliteDriver"
 import { DriverUtils } from "typeorm/driver/DriverUtils"
 import { cleanUndefinedProperties } from "../../helpers/cleanUndefinedProperties"
@@ -119,7 +119,7 @@ describe("Ultimate Test Suite > DML > Select", () => {
 
     generateTests().map(testCase => {
         test(getTestName(testCase), async () => {
-            await Promise.all(dataSources.map(async (dataSource) => {
+            await Promise.all(dataSources.map(async dataSource => {
                 if (cantDoOffsetWithoutLimit(dataSource, testCase)) return;
                 // Because of big data there's some oddities when trying to get the data without ordering it.
                 // So for big datasets we skip the test if it has no order.
