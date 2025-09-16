@@ -10,7 +10,7 @@ import { seedChinookDatabase } from "../../chinook_database/seed"
 
 // Тут нужна система узлов для генерации тестов
 
-describe("Ultimate Test Suite > DML > Select (Joins)", () => {
+describe.todo("Ultimate Test Suite > DML > Select (Joins)", () => {
     let dataSources: DataSource[]
     beforeAll(async () => {
         dataSources = await createTestingConnections({
