@@ -48,4 +48,4 @@
 * Relation select (depth max, 4 tables)
 * Relation select (depth max, max tables)
 
-*TODO: recall what "1 table", "2 tables", "4 tables", and "max tables" mean.*
+"1 table", "2 tables", "4 tables", and "max tables" means that we join 1, 2, 4 or all tables at parralel for the root entity.
