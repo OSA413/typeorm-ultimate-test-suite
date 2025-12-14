@@ -1,3 +1,9 @@
-# Data Manipulation Language
+# Test cases
 
-## (SELECT INSERT UPDATE DELETE MERGE)
+## Data Definition Language
+
+????
+
+## Data Manipulation Language
+
+### (SELECT INSERT UPDATE DELETE MERGE)
