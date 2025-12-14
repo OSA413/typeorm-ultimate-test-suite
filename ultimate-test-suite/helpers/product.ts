@@ -45,6 +45,6 @@ export class CartesianProduct {
         } else {
             result.push([]);
         }
-        return result as never as T[];
+        return result as T[];
     }
 }

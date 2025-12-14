@@ -170,10 +170,10 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 if (!(dataSource.driver instanceof AbstractSqliteDriver)) {
                     const stream = await baseRepoQueryBuilder.stream()
                     if (!(dataSource.driver.options.type === "spanner"))
-                        await new Promise((ok) => stream.once("readable", ok))
+                        await new Promise<void>((ok) => stream.once("readable", ok))
                     const data: any[] = []
                     stream.on("data", (row) => data.push(row))
-                    await new Promise((ok) => stream.once("end", ok))
+                    await new Promise<void>((ok) => stream.once("end", ok))
                     expect(data).to.deep.equal(repoRawMany);
                 }
 
@@ -217,10 +217,10 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 if (!(dataSource.driver instanceof AbstractSqliteDriver)) {
                     const stream = await baseQueryBuilderFrom.stream()
                     if (!(dataSource.driver.options.type === "spanner"))
-                        await new Promise((ok) => stream.once("readable", ok))
+                        await new Promise<void>((ok) => stream.once("readable", ok))
                     const data: any[] = []
                     stream.on("data", (row) => data.push(row))
-                    await new Promise((ok) => stream.once("end", ok))
+                    await new Promise<void>((ok) => stream.once("end", ok))
                     expect(data).to.deep.equal(fromRawMany);
                 }
             }));

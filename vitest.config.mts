@@ -7,7 +7,6 @@ export default defineConfig({
         swc.vite(),
     ],
     test: {
-        bail: 1,
         globalSetup: 'vitest.global-setup.ts',
         testTimeout: 90_000,
         reporters: ['json', 'default'],
