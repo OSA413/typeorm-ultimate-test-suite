@@ -49,3 +49,10 @@
 * [ ] Relation select (depth max, max tables)
 
 "1 table", "2 tables", "4 tables", and "max tables" means that we join 1, 2, 4 or all tables at parralel for the root entity.
+
+## Extra options
+
+* [ ] Select distinct 1, 2, 4, all
+* [ ] Group by + Having
+* [ ] Does TypeORM support functions like `SUM(column), COUNT, MAX` etc?
+* [ ] Select from views, grouped views, and complex views???
