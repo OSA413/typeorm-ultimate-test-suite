@@ -2,19 +2,19 @@
 
 ## One table select
 
-* [ ] Select all implicitly, 1, 2, 4, all explicitly
-* [ ] Get repository query builder get one
-* [ ] Get repository query builder get one raw
-* [ ] Get repository query builder get many
-* [ ] Get repository query builder get many raw
-* [ ] Get repository find one
-* [ ] Get repository find many
-* [ ] Get repository query builder select from stream
-* [ ] Datasource query builder select from get one
-* [ ] Datasource query builder select from get one raw
-* [ ] Datasource query builder select from get many
-* [ ] Datasource query builder select from get many raw
-* [ ] Datasource query builder select from stream
+* [x] Select all implicitly, 1, 2, 4, all explicitly
+* [x] Get repository query builder get one
+* [x] Get repository query builder get one raw
+* [x] Get repository query builder get many
+* [x] Get repository query builder get many raw
+* [x] Get repository find one
+* [x] Get repository find many
+* [x] Get repository query builder select from stream
+* [x] Datasource query builder select from get one
+* [x] Datasource query builder select from get one raw
+* [x] Datasource query builder select from get many
+* [x] Datasource query builder select from get many raw
+* [x] Datasource query builder select from stream
 
 * [ ] +Where 1,2,4 options of (eq, not eq, gt, gte, ltm, lte, like, ilike, between, in, is null)
 
@@ -23,20 +23,20 @@
 * [ ] Case when else end?????
 * [ ] Case when condition else condition end???????
 
-* [ ] Select + Order by 1, 2, 4, all, resonating between ASC and DESC
-* [ ] Select + Where + Order
-* [ ] Select + Limit 1, 10, 100
-* [ ] Select + Offset 1, 10, 100
-* [ ] Select + Limit + Offset
-* [ ] Select + Order + Limit
-* [ ] Select + Order + Offset
-* [ ] Select + Order + Limit + Offset
-* [ ] Select + Where + Limit
-* [ ] Select + Where + Offset
-* [ ] Select + Where + Limit + Offset
-* [ ] Select + Where + Order + Limit
-* [ ] Select + Where + Order + Offset
-* [ ] Select + Where + Order + Limit + Offset
+* [x] Select + Order by 1, 2, 4, all, resonating between ASC and DESC
+* [x] Select + Where + Order
+* [x] Select + Limit 1, 10, 100
+* [x] Select + Offset 1, 10, 100
+* [x] Select + Limit + Offset
+* [x] Select + Order + Limit
+* [x] Select + Order + Offset
+* [x] Select + Order + Limit + Offset
+* [x] Select + Where + Limit
+* [x] Select + Where + Offset
+* [x] Select + Where + Limit + Offset
+* [x] Select + Where + Order + Limit
+* [x] Select + Where + Order + Offset
+* [x] Select + Where + Order + Limit + Offset
 
 ## Relations
 
