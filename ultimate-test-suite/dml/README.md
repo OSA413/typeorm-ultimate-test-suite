@@ -20,6 +20,8 @@
 * insert into table
 * insert into view that supports it (updatable and insertable views)
 
+* insert with/from correlated subquery (see [SELECT](./select/README.md#correlated-subquery))
+
 ## UPDATE
 
 * Update records without WHERE condition.
@@ -41,6 +43,8 @@
 * update table
 * update view that supports it (updatable and insertable views)
 
+* update with/from correlated subquery (see [SELECT](./select/README.md#correlated-subquery))
+
 ## DELETE
 
 * Delete records without WHERE condition.
@@ -50,6 +54,8 @@
 
 * delete from table
 * delete from view that supports it (updatable and insertable views)
+
+* delete with/from correlated subquery (see [SELECT](./select/README.md#correlated-subquery))
 
 ## MERGE
 

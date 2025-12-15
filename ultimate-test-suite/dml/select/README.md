@@ -50,9 +50,32 @@
 
 "1 table", "2 tables", "4 tables", and "max tables" means that we join 1, 2, 4 or all tables at parralel for the root entity.
 
+## Select from another query
+
+## Condition from another query
+
+* [ ] Select * from ... where id = (Select ...)
+* [ ] Select * from ... where id IN (Select ...) (btw there might be an edge case when the subquery return's empty)
+* [ ] Select * from ... where id IN (Select DISTINCT ...)
+* [ ] Select * from ... where id IN (Select MAX(price) ...)
+* [ ] Select * from ... where total >= (Select AVG(total) ...)
+* [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
+* [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
+
+## Correlated subquery
+
+https://en.wikipedia.org/wiki/Correlated_subquery
+
+* when subquery and query use different tables
+* when subquery and query use the same table
+
+* HAVING for correlated subquery
+
 ## Extra options
 
 * [ ] Select distinct 1, 2, 4, all
 * [ ] Group by + Having
 * [ ] Does TypeORM support functions like `SUM(column), COUNT, MAX` etc?
 * [ ] Select from views, grouped views, and complex views???
+* [ ] UNION? INTERSECT? EXCEPT?
+* [ ] EXISTS
