@@ -79,3 +79,4 @@ https://en.wikipedia.org/wiki/Correlated_subquery
 * [ ] Select from views, grouped views, and complex views???
 * [ ] UNION? INTERSECT? EXCEPT?
 * [ ] EXISTS
+* [ ] JSON, the type I mean
