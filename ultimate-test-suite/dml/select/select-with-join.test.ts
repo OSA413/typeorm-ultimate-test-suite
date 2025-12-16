@@ -8,8 +8,6 @@ import { DataSource } from "typeorm"
 import { Album, Artist, Customer, Employee, Genre, Invoice, InvoiceLine, MediaType, Playlist, Track, PlaylistTrack } from "../../chinook_database/entity/Entities"
 import { seedChinookDatabase } from "../../chinook_database/seed"
 
-// Тут нужна система узлов для генерации тестов
-
 describe.todo("Ultimate Test Suite > DML > Select (Joins)", () => {
     let dataSources: DataSource[]
     beforeAll(async () => {
