@@ -70,3 +70,7 @@ Is this needed?
 ## LOCK TABLE
 
 Is this needed?
+
+## SAVE (TypeORM's)
+
+Save as many entities and as deep as possible
