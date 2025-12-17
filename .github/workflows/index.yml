@@ -16,4 +16,4 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-      node-container: "node:20"
+      node-container: "node:24"

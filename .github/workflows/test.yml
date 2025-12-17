@@ -5,7 +5,7 @@ on:
     inputs:
       node-container:
         required: true
-        default: "node:20"
+        default: "node:24"
         type: string
       typeorm-package-link:
         required: false
@@ -14,7 +14,7 @@ on:
     inputs:
       node-container:
         required: true
-        default: "node:20"
+        default: "node:24"
         type: string
       typeorm-package-link:
         required: false
