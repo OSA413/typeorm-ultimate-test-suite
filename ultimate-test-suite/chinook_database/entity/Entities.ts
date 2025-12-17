@@ -38,6 +38,9 @@ export class Artist {
     // name VARCHAR(120),
     @Column({name: "name", nullable: true})
     name: string;
+
+    @OneToMany(() => Album, o => o.artist)
+    albums: Album[];
 }
 
 @Entity("genre")
