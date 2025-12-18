@@ -25,9 +25,9 @@ describe("Ultimate Test Suite > DML > Select (Joins)", () => {
     afterAll(() => closeTestingConnections(dataSources))
 
     generateTests().map(testCase => {
-        test(JSON.stringify(testCase.find), async () => {
+        test(testCase.metadata.entity.entity.name+": "+JSON.stringify(testCase.find), async () => {
             await Promise.all(dataSources.map(async dataSource => {
-                const repo = dataSource.getRepository(testCase.metadata.entity);
+                const repo = dataSource.getRepository(testCase.metadata.entity.entity);
                 const findResult = await repo.find({
                     relations: testCase.find,
                 })

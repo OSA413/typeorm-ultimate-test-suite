@@ -52,16 +52,16 @@ const invoiceLineRelations: RelationTestNode = {
 };
 
 artistRelations.branches = [{field: "albums", node: albumRelations}];
-albumRelations.branches = [{field: "albums", node: artistRelations}, {field: "albums", node: trackRelations}];
-trackRelations.branches = [{field: "albums", node: mediaTypeRelations}, {field: "albums", node: albumRelations}, {field: "albums", node: invoiceLineRelations}];
-mediaTypeRelations.branches = [{field: "albums", node: trackRelations}];
-genreRelations.branches = [{field: "albums", node: trackRelations}];
-playlistRelations.branches = [{field: "albums", node: playlistTrackRelations}];
-playlistTrackRelations.branches = [{field: "albums", node: playlistRelations}, {field: "albums", node: trackRelations}];
-employeeRelations.branches = [{field: "albums", node: customerRelations}];
-customerRelations.branches = [{field: "albums", node: invoiceRelations}, {field: "albums", node: employeeRelations}];
-invoiceRelations.branches = [{field: "albums", node: invoiceLineRelations}];
-invoiceLineRelations.branches = [{field: "albums", node: invoiceRelations}, {field: "albums", node: trackRelations}];
+albumRelations.branches = [{field: "artist", node: artistRelations}, {field: "tracks", node: trackRelations}];
+trackRelations.branches = [{field: "mediaType", node: mediaTypeRelations}, {field: "album", node: albumRelations}, {field: "invoiceLines", node: invoiceLineRelations}];
+mediaTypeRelations.branches = [{field: "tracks", node: trackRelations}];
+genreRelations.branches = [{field: "tracks", node: trackRelations}];
+playlistRelations.branches = [{field: "playlistTracks", node: playlistTrackRelations}];
+playlistTrackRelations.branches = [{field: "playlist", node: playlistRelations}, {field: "track", node: trackRelations}];
+employeeRelations.branches = [{field: "customers", node: customerRelations}, {field: "reportsTo", node: employeeRelations}];
+customerRelations.branches = [{field: "invoices", node: invoiceRelations}, {field: "supportRep", node: employeeRelations}];
+invoiceRelations.branches = [{field: "invoiceLines", node: invoiceLineRelations}, {field: "customer", node: customerRelations}];
+invoiceLineRelations.branches = [{field: "invoice", node: invoiceRelations}, {field: "track", node: trackRelations}];
 
 const relationRoots = [
     artistRelations,
@@ -75,7 +75,7 @@ const relationRoots = [
     customerRelations,
     invoiceRelations,
     invoiceLineRelations,
-]
+];
 
 type TestCase = {
     entity?: any;
@@ -83,21 +83,29 @@ type TestCase = {
 }
 
 const findRelations = (entity: any) => {
-    return relationRoots.find(x => x.entity === entity);
+    return relationRoots.find(x => x.entity.name === entity.name);
 }
 
-const walkRoot = (currentNode: TestCase, root: RelationTestNode, depth: number, range: number): TestCase => {
+const walkRoot = (currentNode: TestCase, root: RelationTestNode, alreadyVisitedEntities: string[], depth: number): TestCase => {
     const testCase: TestCase = {
-        entity: currentNode.entity ?? root.entity,
-        relations: currentNode.relations ?? 
-            faker.helpers.arrayElements(root.branches, range).map((branch) => ({
+        entity: currentNode.entity ?? root,
+        relations: faker.helpers.arrayElements(root.branches, {min: 1, max: 4}).map((branch) => ({
                 entity: branch,
                 relations: [],
-            })),
+            }))
+            .filter(x => 
+                !alreadyVisitedEntities.includes(x.entity.node.entity.name)
+                || (
+                    alreadyVisitedEntities.filter(x => x === "Employee").length <= 3
+                    && x.entity.node.entity.name === "Employee"
+                )
+            ),
     }
 
+    alreadyVisitedEntities.push(testCase.entity.entity?.name ?? testCase.entity.node.entity.name);
+
     if (depth > 1) {
-        testCase.relations = testCase.relations.map((findRelation) => walkRoot(findRelation, findRelations(findRelation.entity), depth - 1, range));
+        testCase.relations = testCase.relations.map((findRelation) => walkRoot(findRelation, findRelations(findRelation.entity.node.entity), alreadyVisitedEntities, depth - 1));
     }
 
     return testCase;
@@ -110,16 +118,16 @@ const transformToFind = (root: TestCase) => {
 }
 
 const transformFindToBySring = (find, prefix = "") => {
-    return Object.keys(find).map(key => find[key] === true ? [`${prefix}${key}`] : transformFindToBySring(find[key], `${key}.`)).flatMap(x => x);
+    return Object.keys(find).map(key => find[key] === true ? [`${prefix}${key}`] : transformFindToBySring(find[key], `${prefix}${key}.`)).flatMap(x => x);
 }
 
 const _generateTests = () => {
     const tests: TestCase[] = []
-    const roots = relationRoots.slice(0, 1);
-    for (let depth = 1; depth <= 8; depth*=2) {
-        for (let range = 1; range <= 8; range*=2) {
-            for (const root of roots) {
-                tests.push(walkRoot({}, root, depth, range));
+    const roots = relationRoots;
+    for (let depth = 1; depth < 20; depth++) {
+        for (const root of roots) {
+            for (let i = 0; i < 1000; i++) {
+                tests.push(walkRoot({}, root, [], depth));
             }
         }
     }
@@ -136,13 +144,16 @@ const _generateTests = () => {
     return transformedTests;
 }
 
+const optimizeTests = (tests: ReturnType<typeof _generateTests>) => {
+    return Array.from(new Map(tests.map(test => [test.metadata.entity.entity.name+": "+JSON.stringify(test.find), test])).values())
+}
+
 export const generateTests = () => {
     console.log("Ultimate Test Suite > DML > Select (Joins)")
     console.log("Generating tests...")
     const allTests = _generateTests()
-    // console.log(`Generated ${allTests.length} tests, optimizing...`)
-    // const optimizedTests = optimizeTests(allTests);
-    const optimizedTests = allTests;
-    // console.log(`Optimization complete, reduced to ${optimizedTests.length} tests (${Math.floor(100-(optimizedTests.length / allTests.length * 100))}% reduction)`)
+    console.log(`Generated ${allTests.length} tests, optimizing...`)
+    const optimizedTests = optimizeTests(allTests);
+    console.log(`Optimization complete, reduced to ${optimizedTests.length} tests (${Math.floor(100-(optimizedTests.length / allTests.length * 100))}% reduction)`)
     return optimizedTests;
 }

@@ -6,7 +6,7 @@
    Description: Creates and populates the Chinook database.
    DB Server: PostgreSql
    Author: Luis Rocha
-   License: https://github.com/lerocha/chinook-database/blob/master/LICENSE.md
+   License: https://github.com/lerocha/chinook-database/blob/master/LICENSE.md (it was MIT last time I checked)
 ********************************************************************************/
 // Prepared for TypeORM testing by Oleg "OSA413" Sokolov
 

@@ -6,7 +6,7 @@
    Description: Creates and populates the Chinook database.
    DB Server: PostgreSql
    Author: Luis Rocha
-   License: https://github.com/lerocha/chinook-database/blob/master/LICENSE.md
+   License: https://github.com/lerocha/chinook-database/blob/master/LICENSE.md (it was MIT last time I checked)
 ********************************************************************************/
 // Prepared for TypeORM testing by Oleg "OSA413" Sokolov
 
@@ -16,7 +16,7 @@
  * 2. Dimensions of numbers (floats/doubles)
  */
 
-import { Column, Entity, Index, JoinColumn, OneToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, OneToOne } from "typeorm";
 
 // FIXME: currently Postgres returns string for numeric columns
 const NumberTransformer = {
@@ -80,6 +80,9 @@ export class MediaType {
     // name VARCHAR(120),
     @Column({name: "name", nullable: true})
     name: string;
+
+    @OneToMany(() => Track, o => o.mediaType)
+    tracks: Track[];
 }
 
 @Entity("album")
@@ -101,6 +104,9 @@ export class Album {
     @ManyToOne(() => Artist, {onDelete: "NO ACTION", onUpdate: "NO ACTION"})
     @JoinColumn({name: "artist_id", foreignKeyConstraintName: "album_artist_id_fkey"})
     artist: Artist;
+
+    @OneToMany(() => Track, o => o.album)
+    tracks: Track[];
 }
 
 @Entity("employee")
@@ -170,6 +176,9 @@ export class Employee {
     // email VARCHAR(60),
     @Column({name: "email", nullable: true})
     email: string;
+
+    @OneToMany(() => Customer, o => o.supportRep)
+    customers: Customer[];
 }
 
 
@@ -232,6 +241,9 @@ export class Customer {
     @ManyToOne(() => Employee, {onDelete: "NO ACTION", onUpdate: "NO ACTION", nullable: true})
     @JoinColumn({name: "support_rep_id", foreignKeyConstraintName: "customer_support_rep_id_fkey"})
     supportRep: Employee;
+
+    @OneToMany(() => Invoice, o => o.customer)
+    invoices: Invoice[]
 }
 
 @Entity("invoice")
@@ -277,6 +289,9 @@ export class Invoice {
     // total NUMERIC(10,2) NOT NULL,
     @Column({name: "total", type: "numeric", precision: 10, scale: 2, transformer: NumberTransformer})
     total: number;
+
+    @OneToMany(() => InvoiceLine, o => o.invoice)
+    invoiceLines: InvoiceLine[];
 }
 
 @Entity("track")
@@ -335,6 +350,9 @@ export class Track {
 
     @OneToMany(() => PlaylistTrack, o => o.playlist)
     playlists: Playlist[];
+
+    @OneToMany(() => InvoiceLine, o => o.invoice)
+    invoiceLines: InvoiceLine[];
 }
 
 @Entity("invoice_line")
