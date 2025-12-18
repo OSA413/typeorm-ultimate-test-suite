@@ -106,14 +106,10 @@ describe("Ultimate Test Suite > DML > Select", () => {
     let dataSources: DataSource[]
     beforeAll(async () => {
         dataSources = await createTestingConnections({
-            schemaCreate: true,
-            dropSchema: true,
             entities: [
                 Album, Artist, Customer, Employee, Genre, Invoice, InvoiceLine, MediaType, Playlist, Track, PlaylistTrack
             ],
         });
-
-        await Promise.all(dataSources.map(seedChinookDatabase))
     })
     afterAll(() => closeTestingConnections(dataSources))
 
