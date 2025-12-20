@@ -175,7 +175,7 @@ const select: SelectTestDescription[] = [
             } else if (entity.name === MediaType.name) {
                 return {mediaTypeId: true, name: true} satisfies FindOneOptions<MediaType>["select"];
             } else if (entity.name === Playlist.name) {
-                return {playlistId: true, name: true, tracks: true} satisfies FindOneOptions<Playlist>["select"];
+                return {playlistId: true, name: true, playlistTracks: true} satisfies FindOneOptions<Playlist>["select"];
             } else if (entity.name === Track.name) {
                 return {trackId: true, milliseconds: true, composer: true, bytes: true} satisfies FindOneOptions<Track>["select"];
             } else if (entity.name === PlaylistTrack.name) {
