@@ -53,6 +53,9 @@ export class Genre {
     // name VARCHAR(120),
     @Column({name: "name", nullable: true})
     name: string;
+
+    @OneToMany(() => Track, o => o.genre)
+    tracks: Track[];
 }
 
 @Entity("playlist")
@@ -66,8 +69,8 @@ export class Playlist {
     @Column({name: "name", nullable: true})
     name: string;
 
-    @OneToMany(() => PlaylistTrack, o => o.track)
-    tracks: Track[];
+    @OneToMany(() => PlaylistTrack, o => o.playlist)
+    playlistTracks: PlaylistTrack[];
 }
 
 @Entity("media_type")
@@ -351,7 +354,7 @@ export class Track {
     @OneToMany(() => PlaylistTrack, o => o.playlist)
     playlists: Playlist[];
 
-    @OneToMany(() => InvoiceLine, o => o.invoice)
+    @OneToMany(() => InvoiceLine, o => o.track)
     invoiceLines: InvoiceLine[];
 }
 

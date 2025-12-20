@@ -14,5 +14,4 @@ export const setup = async () => {
   });
 
   await Promise.all(dataSources.map(seedChinookDatabase))
-
 }
