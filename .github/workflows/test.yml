@@ -55,12 +55,7 @@ jobs:
 
 
   mssql:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        mssql-version: ['^9.1.1', '^10.0.1', '^11.0.1']
-
+    runs-on: ubuntu-latest]
     container: ${{inputs.node-container}}
     services:
       mssql:
@@ -72,7 +67,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm i
-      - run: npm install mssql@${{ matrix.mssql-version }}
       - name: Install TypeORM from another source
         if: ${{inputs.typeorm-package-link != ''}}
         run: npm i ${{inputs.typeorm-package-link}}

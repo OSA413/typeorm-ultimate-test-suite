@@ -110,6 +110,11 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 Album, Artist, Customer, Employee, Genre, Invoice, InvoiceLine, MediaType, Playlist, Track, PlaylistTrack
             ],
         });
+
+        await Promise.all(dataSources.filter(dataSource => dataSource.driver.options.type === "sqljs").map(async dataSource => {
+            await dataSource.synchronize();
+            seedChinookDatabase(dataSource);
+        }));
     })
     afterAll(() => closeTestingConnections(dataSources))
 
