@@ -1,0 +1,13 @@
+[
+  {
+    "skip": false,
+    "name": "mysql",
+    "type": "mysql",
+    "host": "mysql",
+    "port": 3306,
+    "username": "root",
+    "password": "admin",
+    "database": "test",
+    "logging": false
+  }
+]

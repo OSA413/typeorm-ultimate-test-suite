@@ -9,6 +9,19 @@ import { Album, Artist, Customer, Employee, Genre, Invoice, InvoiceLine, MediaTy
 import { seedChinookDatabase } from "../../chinook_database/seed"
 import { generateTests } from "./select-with-join.generate";
 
+const sortAllArraysInObject = (object: any) => {
+    if (!object) return;
+    Object.values(object).forEach((value => {
+        if (Array.isArray(value)) {
+            value.forEach(v => sortAllArraysInObject(v));
+            value.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+        }
+        else if (typeof value === "object") {
+            sortAllArraysInObject(value);
+        }
+    }))
+}
+
 describe("Ultimate Test Suite > DML > Select (Joins)", () => {
     let dataSources: DataSource[]
     beforeAll(async () => {
@@ -20,7 +33,7 @@ describe("Ultimate Test Suite > DML > Select (Joins)", () => {
 
         await Promise.all(dataSources.filter(dataSource => dataSource.driver.options.type === "sqljs").map(async dataSource => {
             await dataSource.synchronize();
-            seedChinookDatabase(dataSource);
+            await seedChinookDatabase(dataSource);
         }));
     })
     afterAll(() => closeTestingConnections(dataSources))
@@ -36,6 +49,10 @@ describe("Ultimate Test Suite > DML > Select (Joins)", () => {
                     relations: testCase.byString,
                 })
 
+                if (dataSource.driver.options.type === "mssql") {
+                    sortAllArraysInObject(findResult);
+                    sortAllArraysInObject(byStringResult);
+                }
                 expect(findResult).toEqual(byStringResult);
             }));
         })

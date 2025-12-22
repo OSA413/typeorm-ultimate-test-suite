@@ -113,7 +113,7 @@ describe("Ultimate Test Suite > DML > Select", () => {
 
         await Promise.all(dataSources.filter(dataSource => dataSource.driver.options.type === "sqljs").map(async dataSource => {
             await dataSource.synchronize();
-            seedChinookDatabase(dataSource);
+            await seedChinookDatabase(dataSource);
         }));
     })
     afterAll(() => closeTestingConnections(dataSources))

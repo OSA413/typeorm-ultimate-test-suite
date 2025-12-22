@@ -75,18 +75,11 @@ jobs:
       - run: npm test
 
 
-  mysql_mariadb:
+  mariadb:
     runs-on: ubuntu-latest
     container: ${{inputs.node-container}}
 
     services:
-      mysql:
-        image: mysql:5.7.37
-        env:
-          MYSQL_ROOT_PASSWORD: "admin"
-          MYSQL_USER: "test"
-          MYSQL_PASSWORD: "test"
-          MYSQL_DATABASE: "test"
       mariadb:
         image: mariadb:10.10.3
         env:
@@ -101,8 +94,32 @@ jobs:
       - name: Install TypeORM from another source
         if: ${{inputs.typeorm-package-link != ''}}
         run: npm i ${{inputs.typeorm-package-link}}
-      - run: cp .github/workflows/test/mysql-mariadb.ormconfig.json ormconfig.json
+      - run: cp .github/workflows/test/mariadb.ormconfig.json ormconfig.json
       - run: npm test
+
+
+  mysql:
+    runs-on: ubuntu-latest
+    container: ${{inputs.node-container}}
+
+    services:
+      mysql:
+        image: mysql:5.7.37
+        env:
+          MYSQL_ROOT_PASSWORD: "admin"
+          MYSQL_USER: "test"
+          MYSQL_PASSWORD: "test"
+          MYSQL_DATABASE: "test"
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm i
+      - name: Install TypeORM from another source
+        if: ${{inputs.typeorm-package-link != ''}}
+        run: npm i ${{inputs.typeorm-package-link}}
+      - run: cp .github/workflows/test/mysql.ormconfig.json ormconfig.json
+      - run: npm test
+
 
 
   better-sqlite3:
