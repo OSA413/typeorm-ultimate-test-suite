@@ -119,7 +119,7 @@ describe("Ultimate Test Suite > DML > Select", () => {
     afterAll(() => closeTestingConnections(dataSources))
 
     generateTests().map(testCase => {
-        test(getTestName(testCase), async () => {
+        test.concurrent(getTestName(testCase), async () => {
             await Promise.all(dataSources.map(async dataSource => {
                 if (cantDoOffsetWithoutLimit(dataSource, testCase)) return;
                 // Because of big data there's some oddities when trying to get the data without ordering it.
