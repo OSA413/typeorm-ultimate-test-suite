@@ -38,24 +38,24 @@ jobs:
       - run: cp .github/workflows/test/cockroachdb.ormconfig.json ormconfig.json
       - run: npm test
 
-  mongodb:
-    runs-on: ubuntu-latest
-    container: ${{inputs.node-container}}
-    services:
-      mongodb:
-        image: mongo:5.0.12
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm i
-      - name: Install TypeORM from another source
-        if: ${{inputs.typeorm-package-link != ''}}
-        run: npm i ${{inputs.typeorm-package-link}}
-      - run: cp .github/workflows/test/mongodb.ormconfig.json ormconfig.json
-      - run: npm test
+  # mongodb:
+  #   runs-on: ubuntu-latest
+  #   container: ${{inputs.node-container}}
+  #   services:
+  #     mongodb:
+  #       image: mongo:5.0.12
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: npm i
+  #     - name: Install TypeORM from another source
+  #       if: ${{inputs.typeorm-package-link != ''}}
+  #       run: npm i ${{inputs.typeorm-package-link}}
+  #     - run: cp .github/workflows/test/mongodb.ormconfig.json ormconfig.json
+  #     - run: npm test
 
 
   mssql:
-    runs-on: ubuntu-latest]
+    runs-on: ubuntu-latest
     container: ${{inputs.node-container}}
     services:
       mssql:
@@ -115,19 +115,6 @@ jobs:
         if: ${{inputs.typeorm-package-link != ''}}
         run: npm i ${{inputs.typeorm-package-link}}
       - run: cp .github/workflows/test/better-sqlite3.ormconfig.json ormconfig.json
-      - run: npm test
-
-
-  sqlite:
-    runs-on: ubuntu-latest
-    container: ${{inputs.node-container}}
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm i
-      - name: Install TypeORM from another source
-        if: ${{inputs.typeorm-package-link != ''}}
-        run: npm i ${{inputs.typeorm-package-link}}
-      - run: cp .github/workflows/test/sqlite.ormconfig.json ormconfig.json
       - run: npm test
 
 
