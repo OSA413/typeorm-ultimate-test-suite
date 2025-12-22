@@ -11,15 +11,21 @@ import { generateTests } from "./select-with-join.generate";
 
 const sortAllArraysInObject = (object: any) => {
     if (!object) return;
-    Object.values(object).forEach((value => {
-        if (Array.isArray(value)) {
-            value.forEach(v => sortAllArraysInObject(v));
-            value.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
-        }
-        else if (typeof value === "object") {
-            sortAllArraysInObject(value);
-        }
-    }))
+    if (Array.isArray(object)) {
+        object.forEach(v => sortAllArraysInObject(v));
+        object.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    }
+    else {
+        Object.values(object).forEach((value => {
+            if (Array.isArray(value)) {
+                value.forEach(v => sortAllArraysInObject(v));
+                value.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+            }
+            else if (typeof value === "object") {
+                sortAllArraysInObject(value);
+            }
+        }))
+    }
 }
 
 describe("Ultimate Test Suite > DML > Select (Joins)", () => {
@@ -49,7 +55,9 @@ describe("Ultimate Test Suite > DML > Select (Joins)", () => {
                     relations: testCase.byString,
                 })
 
-                if (dataSource.driver.options.type === "mssql") {
+                // Sometimes these databases return the results in different order
+                if ((["mssql", "cockroachdb", "postgres"] as typeof dataSource.driver.options.type[])
+                    .includes(dataSource.driver.options.type)) {
                     sortAllArraysInObject(findResult);
                     sortAllArraysInObject(byStringResult);
                 }
