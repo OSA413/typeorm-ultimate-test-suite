@@ -8,6 +8,7 @@ export default defineConfig({
     ],
     test: {
         maxWorkers: 8,
+        maxConcurrency: 16,
         globalSetup: 'vitest.global-setup.ts',
         testTimeout: 90_000,
         reporters: ['json', 'default'],
