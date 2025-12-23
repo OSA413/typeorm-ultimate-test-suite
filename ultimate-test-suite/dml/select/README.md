@@ -61,6 +61,7 @@
 * [ ] Select * from ... where total >= (Select AVG(total) ...)
 * [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
 * [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
+* [ ] and the same for CTE...
 
 ## Correlated subquery
 
