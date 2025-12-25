@@ -52,6 +52,10 @@
 
 ## Select from another query
 
+## Query inside Select with alias
+
+Query builder supports it
+
 ## Condition from another query
 
 * [ ] Select * from ... where id = (Select ...)
