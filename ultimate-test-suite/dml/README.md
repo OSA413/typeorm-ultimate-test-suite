@@ -12,6 +12,8 @@
 * insert into table from another query - multiple records.
 * insert into table from another table with the same structure.
 
+* create table and insert into it from existing table
+
 * Random values
 * Default values
 * Null values
@@ -44,6 +46,9 @@
 * update view that supports it (updatable and insertable views)
 
 * update with/from correlated subquery (see [SELECT](./select/README.md#correlated-subquery))
+* update a table where WHERE is a subquery
+
+* the classic task of "increase sallary by 10% for employees with salary less than 1000 and department id 1" (do that after clonning the employee table)
 
 ## DELETE
 
@@ -56,6 +61,8 @@
 * delete from view that supports it (updatable and insertable views)
 
 * delete with/from correlated subquery (see [SELECT](./select/README.md#correlated-subquery))
+
+* delete records that are not related with any other table (or a group of tables that are not related with any other table (i think this is called "islands"))
 
 ## MERGE
 

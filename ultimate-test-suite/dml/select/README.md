@@ -16,7 +16,10 @@
 * [x] Datasource query builder select from get many raw
 * [x] Datasource query builder select from stream
 
-* [ ] +Where 1,2,4 options of (eq, not eq, gt, gte, ltm, lte, like, ilike, between, in, is null)
+* [ ] +Where 1,2,4 options of (eq, not eq, gt, gte, ltm, lte, like, ilike, between, in, is null, is not null)
+* [ ] Where for AND and OR with brackets (query builder supports it)
+
+* Try add aliases
 
 * [ ] Calculated columns (Raw??????)??????
 * [ ] Concat(Raw?????)??????
@@ -38,6 +41,9 @@
 * [x] Select + Where + Order + Offset
 * [x] Select + Where + Order + Limit + Offset
 
+* [ ] try add order by column number
+* [ ] TODO: find out what functions/operators TypeORM supports (like `AVG`, `ROUND`)
+
 ## Relations
 
 * [ ] Relation select (depth 1, 1 table)
@@ -56,6 +62,8 @@
 
 Query builder supports it
 
+Also try add WHERE conditiion for aliased field
+
 ## Condition from another query
 
 * [ ] Select * from ... where id = (Select ...)
@@ -66,6 +74,8 @@ Query builder supports it
 * [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
 * [ ] SELECT * FROM ... GROUP BY ... HAVING something CONDITION (SELECT ...)
 * [ ] and the same for CTE...
+
+## Non-correlated subquery
 
 ## Correlated subquery
 
@@ -85,3 +95,28 @@ https://en.wikipedia.org/wiki/Correlated_subquery
 * [ ] UNION? INTERSECT? EXCEPT?
 * [ ] EXISTS
 * [ ] JSON, the type I mean
+* [ ] Try select ... from table1, table2 where table1.id = table2.id
+* [ ] Order by substring (or other function)
+* [ ] Does TypeORM support window functions (the `row_number() over`)?...
+* [ ] Group by ... ROLLUP ?????
+* [ ] COUNT DISTINCT
+
+## JOINS
+
+There should be 2^4 variants if I'm right
+
+Also it looks like TypeORM supports only left join and inner join
+
+* [ ] Left join
+* [ ] Exclusive left join
+* [ ] Right join
+* [ ] Exclusive right join
+* [ ] Inner join
+* [ ] Outer join
+* [ ] Cross join
+* [ ] Natural join
+* [ ] Full join
+* [ ] Exclusive full join
+* [ ] Left outer join
+* [ ] Right outer join
+* [ ] Full outer join
