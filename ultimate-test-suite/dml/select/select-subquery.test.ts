@@ -125,105 +125,30 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 // Because of big data there's some oddities when trying to get the data without ordering it.
                 // So for big datasets we skip the test if it has no order.
                 if (testCase.entity.entity === Track && !testCase.order.optionForRepo(testCase.entity.entity)) skip();
+                if (testCase.select.selectOption(testCase.entity.entity) === undefined) skip();
+                
+                // please note that you have to use dataSource instead of repository
+                const repo = dataSource;
 
-                const repo = dataSource.getRepository(testCase.entity.entity);
-
-                const baseRepoQueryBuilder = testCase.order.applyOption(testCase.entity.entity,
-                    testCase.select.applySelectToQB(testCase.entity.entity,
-                        repo.createQueryBuilder(testCase.entity.nameAlias)
+                const baseRepoQueryBuilder = repo.createQueryBuilder().from((subquery) => 
+                    testCase.order.applyOption(testCase.entity.entity,
+                    testCase.select.applySelectToQB(testCase.entity.entity, subquery)
+                        .from(testCase.entity.entity, testCase.entity.nameAlias)
                     )
-                )
-                .where(testCase.where.option(testCase.entity.entity))
-                .limit(testCase.limit.option)
-                .offset(testCase.offset.option);
+                    .where(testCase.where.option(testCase.entity.entity))
+                    .limit(testCase.limit.option)
+                    .offset(testCase.offset.option)
+                , "subquery");
 
-                const repoOne = await baseRepoQueryBuilder.comment("repoOne").getOne();
-                const repoRawOne = await baseRepoQueryBuilder.comment("repoRawOne").getRawOne();
+                const repoRawMany = await baseRepoQueryBuilder.comment("repoMany").getRawMany().then(x => x.map(testCase.entity.rawMapper));
 
-                expect(repoOne ? cleanUndefinedProperties(repoOne) : null)
-                    .to.deep.equal(repoRawOne ? cleanUndefinedProperties(testCase.entity.rawMapper(repoRawOne)) : null)
+                const {dataset: preparedDataset} = prepareDataset(testCase, dataSource.driver.options.type);
 
-                const repoMany = await baseRepoQueryBuilder.comment("repoMany").getMany();
-                const repoRawMany = await baseRepoQueryBuilder.comment("repoRawMany").getRawMany();
-
-                const commonOptions = {
-                    where: testCase.where.option(testCase.entity.entity),
-                    select: testCase.select.selectOption(testCase.entity.entity),
-                    order: testCase.order.optionForRepo(testCase.entity.entity),
-                }
-
-                const {dataset: preparedDataset, first: firstFromDataset} = prepareDataset(testCase, dataSource.driver.options.type);
-                
-                const repoFindOne = await repo.findOne(commonOptions);
-                if (calculateExceptionForDeepEqualDataset(testCase, dataSource.driver.options.type)
-                    && calculateExceptionForHasDeepMembers(testCase, dataSource.driver.options.type))
-                    expect(repoFindOne ? cleanUndefinedProperties(repoFindOne) : null)
-                        .to.deep.equal(firstFromDataset ? cleanUndefinedProperties(firstFromDataset) : null);
-
-                const repoFind = await repo.find({
-                    ...commonOptions,
-                    skip: testCase.offset.option,
-                    take: testCase.limit.option,
-                });
-
-                expect(repoFind).to.deep.equal(repoMany);
-
-                if (!(dataSource.driver instanceof AbstractSqliteDriver)) {
-                    const stream = await baseRepoQueryBuilder.stream()
-                    if (!(dataSource.driver.options.type === "spanner"))
-                        await new Promise<void>((ok) => stream.once("readable", ok))
-                    const data: any[] = []
-                    stream.on("data", (row) => data.push(row))
-                    await new Promise<void>((ok) => stream.once("end", ok))
-                    expect(data).to.deep.equal(repoRawMany);
-                }
-
-                const baseQueryBuilderFrom = testCase.order.applyOption(testCase.entity.entity,
-                    testCase.select.applySelectToQB(testCase.entity.entity,
-                        dataSource.createQueryBuilder()
-                    )
-                )
-                .from(testCase.entity.entity, testCase.entity.nameAlias)
-                .where(testCase.where.option(testCase.entity.entity))
-                .limit(testCase.limit.option)
-                .offset(testCase.offset.option)
-                
-                const fromOne = await baseQueryBuilderFrom.comment("fromOne").getOne();
-                const fromRawOne = await baseQueryBuilderFrom.comment("fromRawOne").getRawOne()
-                const fromMany = await baseQueryBuilderFrom.comment("fromMany").getMany()
-                const fromRawMany = await baseQueryBuilderFrom.comment("fromRawMany").getRawMany()
-
-                // TODO? describe this "feature"?
-                if (testCase.select.selectOption(testCase.entity.entity) === undefined) {
-                    expect(fromOne).to.deep.equal(null);
-                    expect(repoRawOne ? testCase.entity.rawMapper(repoRawOne) : null).to.deep.equal(fromRawOne ? testCase.entity.rawFromMapper(fromRawOne) : null);
-                    expect(fromMany).to.deep.equal([]);
-                    expect(repoRawMany.map(testCase.entity.rawMapper)).to.deep.equal(fromRawMany.map(testCase.entity.rawFromMapper));
-                }
-                else {
-                    expect(repoOne).to.deep.equal(fromOne);
-                    expect(repoRawOne ? testCase.entity.rawMapper(repoRawOne) : null).to.deep.equal(fromRawOne ? testCase.entity.rawMapper(fromRawOne) : null);
-
-                    // I couldn't figure out how to make a sort like DB does
-                    if (calculateExceptionForDeepEqualDataset(testCase, dataSource.driver.options.type))
-                        expect(fromMany.map(cleanUndefinedProperties)).to.deep.equal(preparedDataset.map(cleanUndefinedProperties));
-                    else if (calculateExceptionForHasDeepMembers(testCase, dataSource.driver.options.type))
-                        expect(fromMany.map(cleanUndefinedProperties)).to.have.deep.members(preparedDataset.map(cleanUndefinedProperties));
-                    expect(repoRawMany.map(testCase.entity.rawMapper)).to.deep.equal(fromRawMany.map(testCase.entity.rawMapper));
-                }
-                
-                expect(repoRawMany.map(testCase.entity.rawMapper).map(cleanUndefinedProperties))
-                    .to.deep.equal(repoFind.map(cleanUndefinedProperties));
-
-                if (!(dataSource.driver instanceof AbstractSqliteDriver)) {
-                    const stream = await baseQueryBuilderFrom.stream()
-                    if (!(dataSource.driver.options.type === "spanner"))
-                        await new Promise<void>((ok) => stream.once("readable", ok))
-                    const data: any[] = []
-                    stream.on("data", (row) => data.push(row))
-                    await new Promise<void>((ok) => stream.once("end", ok))
-                    expect(data).to.deep.equal(fromRawMany);
-                }
+                // I couldn't figure out how to make a sort like DB does
+                if (calculateExceptionForDeepEqualDataset(testCase, dataSource.driver.options.type))
+                    expect(repoRawMany.map(cleanUndefinedProperties)).to.deep.equal(preparedDataset.map(cleanUndefinedProperties));
+                else if (calculateExceptionForHasDeepMembers(testCase, dataSource.driver.options.type))
+                    expect(repoRawMany.map(cleanUndefinedProperties)).to.have.deep.members(preparedDataset.map(cleanUndefinedProperties));
             }));
         })
     })
