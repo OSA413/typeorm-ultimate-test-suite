@@ -126,11 +126,15 @@ describe("Ultimate Test Suite > DML > Select", () => {
                 // So for big datasets we skip the test if it has no order.
                 if (testCase.entity.entity === Track && !testCase.order.optionForRepo(testCase.entity.entity)) skip();
                 if (testCase.select.selectOption(testCase.entity.entity) === undefined) skip();
+                if (
+                    dataSource.driver.options.type === "mssql"
+                    && testCase.where.option(testCase.entity.entity).length > 0
+                    && !testCase.offset.option
+                    && !testCase.limit.option
+                ) skip("MSSQL: Error: The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.");
                 
                 // please note that you have to use dataSource instead of repository
-                const repo = dataSource;
-
-                const baseRepoQueryBuilder = repo.createQueryBuilder().from((subquery) => 
+                const baseRepoQueryBuilder = dataSource.createQueryBuilder().from((subquery) => 
                     testCase.order.applyOption(testCase.entity.entity,
                     testCase.select.applySelectToQB(testCase.entity.entity, subquery)
                         .from(testCase.entity.entity, testCase.entity.nameAlias)
